@@ -5,7 +5,7 @@
    This file is part of Xhomer.
 
    Xhomer is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License version 2 
+   it under the terms of the GNU General Public License version 2
    as published by the Free Software Foundation.
 
    Xhomer is distributed in the hope that it will be useful,
@@ -47,6 +47,7 @@ int	pro_kb_port;
 int	pro_ptr_port;
 int	pro_com_port;
 
+pro_gfx_driver_t *pro_gfx_current_driver;
 
 #ifdef TRACE
 /* PC Trace */
@@ -183,7 +184,7 @@ char		*strtmp;
 
 	printf("\n");
 	printf("XHOMER: Digital Pro/350 emulator (version %s)\n", PRO_VERSION);
-	printf("(Press ctrl-F1, while the emulator window has focus, to access the control menu)\n");
+	printf("(Press ctrl-shift-esc, while the emulator window has focus, to access the control menu)\n");
 	printf("\n");
 
 	seteuid(getuid());
@@ -210,7 +211,7 @@ char		*strtmp;
 	  h = getc(fptr);
 	  ROM[i] = h*256+l;
 	}
-	  
+
 	fclose(fptr);
 
 
@@ -230,7 +231,7 @@ char		*strtmp;
 	  h = getc(fptr);
 	  IDROM[i] = h*256+l;
 	}
-	  
+
 	fclose(fptr);
 #endif
 

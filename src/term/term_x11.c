@@ -826,10 +826,12 @@ int			old_uid = geteuid();
 
 	    XF86VidModeGetAllModeLines(ProDisplay, ProScreen, &modecount, &modesinfo);
 
-	    for(i=0; i<modecount; i++)
-	      if ((modesinfo[i]->hdisplay == PRO_VID_SCRWIDTH)
-	          && (modesinfo[i]->vdisplay == pro_screen_full_scale*PRO_VID_SCRHEIGHT))
+	    for(i=0; i<modecount; i++) {
+		  printf("Mode found with h x w = %d x %d\r\n", modesinfo[i]->hdisplay, modesinfo[i]->vdisplay);
+	      if ((modesinfo[i]->hdisplay == PRO_VID_SCRWIDTH) && (modesinfo[i]->vdisplay == pro_screen_full_scale*PRO_VID_SCRHEIGHT)) {
 	        break;
+		  }
+		}
 
 	    if (i == modecount)
 	    {
@@ -924,7 +926,6 @@ int			old_uid = geteuid();
 	      pro_screen_pixsize = 4;
 	      pro_screen_pixsize_act = 3;
 	      break;
-
 	    default:
 	      printf("Unsupported pixel depth\r\n");
 	      return PRO_FAIL;

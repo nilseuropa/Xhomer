@@ -1,0 +1,61 @@
+PRO177     P/OS Hard Disk  Version: 3.2, October 1989
+
+Submitted by: Digital Equipment Corporation
+
+Operating System: P/OS V3.2  Memory Required: 512KB  Hardware
+Required: PC350 or PC380 with minimum 10 meg hard disk and floating
+point adapter.  Keywords: Operating System, Professional 300 Series -
+P/OS
+
+Abstract: P/OS Hard Disk is a disk-based, multi-programming,
+priority-structured, event-driven operating system, which
+includes:
+. P/OS Hard Disk User interface
+. P/OS Hard Disk Record Management System
+. CORE Graphics Library
+. PRO/GIDIS Graphics Tools
+. DECnet Support
+. DECtouch Driver
+. PROSE Editor
+. EDT Editor
+. Backup and Restore Capabilities - Backup and Restore
+  Application and Backup and Restore Utility (BRU)
+. Disk Maintenance Utility
+. System Installation and Customization Utility
+. Digital Command Language (DCL) user interface; can be used
+  in many cases as an alternative to the menu-based user
+  interface.
+
+Both the Professional 300 and P/OS support the Digital
+Multi-national Character set.  By using eight rather than
+seven bits to represent a character, the character may be
+used to define both the ASCII characters and other
+characters including most Western European Characters.  The
+compose key allows typing of composite characters not
+represented on the keyboard legend.
+
+The P/OS Hard Disk User Interface is a hierachy of menus and
+forms through which the user interacts with the operating
+system, utilities and applications.  A menu may be a list of
+applications, a list of files or directories, or a list of
+other menus.  Included are File Services, Print Services and
+Environment Services.
+
+Following is a list of the manuals you will receive when you
+order Media Service Charge Code (EG):
+  "P/OS Server User's Guide"
+  "PROSE User's Guide"
+  "PRO/EDT User's Guide"
+  "Command Language User's Guide"
+   "Hard Disk System User's Guide"
+  "Hard Disk System for Beginners"
+  "Hard Disk System Error Guide"
+  "P/OS Hard Disk System Release Notes"
+
+Notes: This program is also included on DECUS No. VS0112.
+
+Documentation available in hardcopy only. Sources not included.
+
+Media (Service Charge Code): User's Manual (EG), Twenty-One RX50
+Diskettes (JP)  Format: P/OS
+.

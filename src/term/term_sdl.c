@@ -5,7 +5,7 @@
    This file is part of Xhomer.
 
    Xhomer is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License version 2 
+   it under the terms of the GNU General Public License version 2
    as published by the Free Software Foundation.
 
    Xhomer is distributed in the hope that it will be useful,
@@ -20,6 +20,8 @@
 
 
 #ifdef PRO
+
+#define REPEAT_SCREEN_LINES
 
 #ifdef HAS_SDL
 
@@ -331,8 +333,8 @@ LOCAL int pro_keyboard_lookup_down (SDLKey sym)
 	  case SDLK_LMETA:			return PRO_LK201_HELP;
 	  case SDLK_PAUSE:			return PRO_LK201_DO;
 
-//	  case SDLK_a:				return PRO_LK201_A;
-	  case SDLK_a:				return PRO_LK201_ADDOP;
+	  case SDLK_a:				return PRO_LK201_A;
+	  // case SDLK_a:				return PRO_LK201_ADDOP;
 	  case SDLK_b:				return PRO_LK201_B;
 	  case SDLK_c:				return PRO_LK201_C;
 	  case SDLK_d:				return PRO_LK201_D;
@@ -456,11 +458,11 @@ LOCAL void pro_keyboard_fifo_put (int key)
 int pro_sdl_keyboard_get ()
 {
 int	key;
-	
+
 
 	/* Get character from keycode FIFO */
 	/* Check if FIFO is empty */
-	if (pro_keyboard_fifo_h == pro_keyboard_fifo_t)	
+	if (pro_keyboard_fifo_h == pro_keyboard_fifo_t)
 	  key = PRO_NOCHAR;
 	else
 	{
@@ -514,6 +516,14 @@ unsigned char *keys = SDL_GetKeyState(NULL);
 }
 
 
+int is_full_screen(SDL_Surface *surface)
+{
+    // Return true if fullscreen
+    if (surface->flags & SDL_FULLSCREEN) return 1;
+    // Return false if windowed
+    return 0;
+}
+
 /* Initialize the display */
 int pro_sdl_screen_init ()
 {
@@ -541,6 +551,13 @@ char	window_pos_env[256];
 #else
 	  ProSDLScreen = SDL_SetVideoMode(PRO_VID_SCRWIDTH, pro_screen_winheight, 0, SDL_SWSURFACE);
 #endif
+
+		if (pro_screen_full==1&&!is_full_screen(ProSDLScreen)){
+			int tfsRetval = SDL_WM_ToggleFullScreen(ProSDLScreen); // todo: menu
+		}
+		else if (pro_screen_full==0&&is_full_screen(ProSDLScreen)){
+			int tfsRetval = SDL_WM_ToggleFullScreen(ProSDLScreen);
+		}
 
 	  ProSDLDepth = ProSDLScreen->format->BitsPerPixel;
 
@@ -885,7 +902,7 @@ int flip_needed = 0;
 	            {
 	              cindex = (vdata2 & 04) | (vdata1 & 02) | (vdata0 & 01);
 	              sdl_color = SDL_MapRGB(pro_sdl_image->format, pro_sdl_lut[cindex].r, pro_sdl_lut[cindex].g, pro_sdl_lut[cindex].b);
-  
+
 	              Uint8 *p = (Uint8 *)pro_sdl_image->pixels + y * pro_sdl_image->pitch + vpix * sdl_bpp;
 	              switch(sdl_bpp) {
 	                case 1:
@@ -933,6 +950,23 @@ int flip_needed = 0;
 		      SDL_BlitSurface(pro_sdl_overlay_data, NULL, pro_sdl_image, NULL);
 
 		    SDL_BlitSurface(pro_sdl_image, &sdl_srcrect, ProSDLScreen, &sdl_dstrect);
+
+#ifdef REPEAT_SCREEN_LINES
+			if (pro_screen_window_scale > 1) {
+				sdl_dstrect.x = x;
+				sdl_dstrect.y = y*pro_screen_window_scale-1;
+				sdl_dstrect.w = PRO_VID_CLS_PIX;
+				sdl_dstrect.h = 1;
+				SDL_BlitSurface(pro_sdl_image, &sdl_srcrect, ProSDLScreen, &sdl_dstrect);
+			}
+			if (pro_screen_window_scale > 2) {
+				sdl_dstrect.x = x;
+				sdl_dstrect.y = y*pro_screen_window_scale-2;
+				sdl_dstrect.w = PRO_VID_CLS_PIX;
+				sdl_dstrect.h = 1;
+				SDL_BlitSurface(pro_sdl_image, &sdl_srcrect, ProSDLScreen, &sdl_dstrect);
+			}
+#endif
 
 	        /* Mark cache entry valid */
 

@@ -77,8 +77,8 @@ CC += -ffloat-store
 
 # The 1st choice runs about 15% slower than the 2nd (-O3 -fomit-frame-pointer).
 # but it (re)compiles faster and unlike the second choice, it is debuggable.
-#CC += -g -O0 -fno-inline
-CC += -O3 -Winline -fomit-frame-pointer
+CC += -g -O0 -fno-inline
+#CC += -O3 -Winline -fomit-frame-pointer
 
 # Some older gcc's need this on i386 to work around a bug.  As long as
 # omit-frame-pointer is also set, it doesn't seem to hurt performance, so
@@ -90,9 +90,9 @@ CC += -O3 -Winline -fomit-frame-pointer
 TARGET = $(shell echo `uname -s`-`uname -r | cut -d . -f 1`)
 
 CCINCS =
-CCDEFS += -DLOCAL=static -DGLOBAL=extern -DPRO
+CCDEFS += -DLOCAL=static -DGLOBAL=extern -DPRO -DDGA -DDGA2
 CCLIBS =
-CCLINK = -lm
+CCLINK = -lm -lXxf86vm -l:libXxf86dga.a -lXext
 CCLINKSTATIC = -static -ldl
 
 
@@ -121,8 +121,8 @@ endif
 
 
 ifeq ($(USE_CURSES),Y)
-#Mac#  CCINCS += 
-#Linux#  CCINCS += 
+#Mac#  CCINCS +=
+#Linux#  CCINCS +=
 #Cygwin#  CCINCS += -I/usr/include/ncurses
   CCINCS +=
   CCDEFS += -DHAS_CURSES
@@ -141,9 +141,9 @@ ifeq ($(USE_SDL),Y)
 #Cygwin#  CCDEFS += -DHAS_SDL
   CCDEFS += -DHAS_SDL -D_GNU_SOURCE=1 -D_REENTRANT
 #Mac#  CCLIBS += -L/opt/local/lib
-#Linux#  CCLIBS += 
+#Linux#  CCLIBS +=
 #Cygwin#  CCLIBS += -L/usr/local/lib
-  CCLIBS += 
+  CCLIBS +=
 #Mac#  CCLINK += -lSDLmain -lSDL -Wl,-framework,Cocoa
 #Linux#  CCLINK += -lSDL -lpthread
 #Cygwin#  CCLINK += -lSDLmain -lSDL
@@ -159,11 +159,11 @@ ifeq ($(USE_X),Y)
   CCDEFS += -DHAS_X11
   CCLIBS += -L$(X11DIR)/lib -L/usr/X11/lib
   CCLINK += -lX11
-  
+
   ifeq ($(USE_SHM),Y)
     CCLINK += -lXext
   endif
-    
+
   # But some vendors put things in non-standard places
   ifeq ($(TARGET), HP-UX-A)
     # HP-UX 9
@@ -215,6 +215,7 @@ archive:
 
 clean:
 	-@rm -f *.o *~ xhomer xhomer.static texthomer texthomer.static sdlhomer sdlhomer.static convert_roms
+	-@rm -rf src/*.o src/term/*.o src/simh/*.o src/tools/*.o
 
 dep depend:
 	@egrep -e "# Dependencies" Makefile > /dev/null || \
@@ -239,7 +240,7 @@ pro_init.o: src/pro_init.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pr
 pro_int.o: src/pro_int.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_config.h
 pro_kb.o: src/pro_kb.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_config.h
 pro_la50.o: src/pro_la50.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_config.h
-pro_lk201.o: src/pro_lk201.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_lk201.h src/pro_config.h 
+pro_lk201.o: src/pro_lk201.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_lk201.h src/pro_config.h
 pro_maint.o: src/pro_maint.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_config.h
 pro_mem.o: src/pro_mem.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_config.h
 pro_menu.o: src/pro_menu.c src/pdp11_defs.h src/sim_defs.h src/pro_defs.h src/pro_version.h src/pro_lk201.h src/pro_config.h
@@ -256,4 +257,3 @@ term_generic.o: src/term/term_generic.c src/term/term_gfx.h src/pro_defs.h src/p
 term_curses.o: src/term/term_curses.c src/term/term_gfx.h src/pro_defs.h src/pro_version.h src/pro_lk201.h src/pro_config.h
 term_x11.o: src/term/term_x11.c src/term/term_gfx.h src/pro_defs.h src/pro_version.h src/pro_lk201.h src/pro_config.h
 term_sdl.o: src/term/term_sdl.c src/term/term_gfx.h src/pro_defs.h src/pro_version.h src/pro_lk201.h src/pro_config.h
-  
